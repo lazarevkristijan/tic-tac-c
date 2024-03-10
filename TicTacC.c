@@ -30,12 +30,16 @@ int main(){
             while(1 == 1){
                 if (playerMove(board, PLAYER1, &playAgain) != 1){
                     playerMove(board, PLAYER2, &playAgain);
+                } else {
+                    break;
                 }
             }
         } else {
             while(1 == 1){
                 if (playerMove(board, PLAYER2, &playAgain) != 1){
                     playerMove(board, PLAYER1, &playAgain);
+                } else {
+                    break;
                 }
             }
         }
@@ -55,17 +59,24 @@ void printBoard(char board[3][3]){
 }
 
 int playerMove(char board[3][3], char player, char *playAgain){
-    int row;
-    int col;
+    int row, col;
     
     printf("Player %c make a move\n", player);
 
     do{
     printf("Choose row: ");
-    scanf("%d", &row);
+    if(scanf("%d", &row) != 1){
+        printf("Invalid input. Enter a number \n");
+        while(getchar() != '\n');
+        continue;
+    };
     
     printf("Choose col: ");
-    scanf("%d", &col);
+    if(scanf("%d", &col) != 1){
+        printf("Invalid input. Enter a number \n");
+        while(getchar() != '\n');
+        continue;
+    };
 
     if(row > 3 || row < 0 || col > 3 || col < 0 || board[row][col] != ' ') {
         printf("Invalid move\n");
