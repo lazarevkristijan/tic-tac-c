@@ -7,7 +7,7 @@ int emptySpaces(char board[3][3]);
 char checkWinner(char board[3][3], char player);
 void clearBuffer();
 void resetGame(char board[3][3]);
-int playerMove(char board[3][3], char player, char playAgain);
+int playerMove(char board[3][3], char player, char *playAgain);
 
 int main(){
 
@@ -16,19 +16,18 @@ int main(){
     char playAgain = 'Y';
     
     char board[3][3] = {{' ', ' ', ' '},
-                        {'X', 'O', ' '}, 
-                        {'O', 'X', 'X'}};
+                        {' ', ' ', ' '}, 
+                        {' ', ' ', ' '}};
 
     printBoard(board);
 
     while(playAgain == 'Y'){
-        if (playerMove(board, PLAYER1, playAgain) != 1){
-            playerMove(board, PLAYER2, playAgain);
+        if (playerMove(board, PLAYER1, &playAgain) != 1){
+            playerMove(board, PLAYER2, &playAgain);
         }
-        printf("ply again is: %c", playAgain);
     }
 
-    printf("Thnaks for playing");
+    printf("Thnaks for playing\n");
     
 
     return 0;
@@ -42,7 +41,7 @@ void printBoard(char board[3][3]){
     printf(" %c  | %c  |  %c \n", board[2][0], board[2][1], board[2][2]);
 }
 
-int playerMove(char board[3][3], char player, char playAgain){
+int playerMove(char board[3][3], char player, char *playAgain){
     int row;
     int col;
     
@@ -62,21 +61,29 @@ int playerMove(char board[3][3], char player, char playAgain){
 
     board[row][col] = player;
     printBoard(board);
-    if(checkWinner(board,player) == player){
-        printf("%c WON!", player);
+
+    if(checkWinner(board, player) == player){
+        printf("%c WON!\n", player);
+        printf("Play again? (Y/N): ");
+
         clearBuffer();
-        scanf("%c", playAgain);
-        playAgain = toupper(playAgain);
-        if(playAgain == 'Y'){
+        scanf(" %c", playAgain);
+        *playAgain = toupper(*playAgain);
+        if(*playAgain == 'Y'){
             resetGame(board);
+            printf("NEW GAME\n");
         }
         return 1;
     } else if (emptySpaces(board) == 0){
         printf("TIE!");
-        scanf("%c", playAgain);
-        playAgain = toupper(playAgain);
-        if(playAgain == 'Y'){
+        printf("Play again? (Y/N): ");
+
+        clearBuffer();
+        scanf(" %c", playAgain);
+        *playAgain = toupper(*playAgain);
+        if(*playAgain == 'Y'){
             resetGame(board);
+            printf("NEW GAME\n");
         }
         return 1;
     }
