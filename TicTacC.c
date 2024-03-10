@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <time.h>
 
 void printBoard(char board[3][3]);
 int emptySpaces(char board[3][3]);
@@ -15,6 +17,8 @@ int main(){
     const char PLAYER2 = 'O';
     char playAgain = 'Y';
     
+    srand(time(NULL));
+    
     char board[3][3] = {{' ', ' ', ' '},
                         {' ', ' ', ' '}, 
                         {' ', ' ', ' '}};
@@ -22,13 +26,22 @@ int main(){
     printBoard(board);
 
     while(playAgain == 'Y'){
-        if (playerMove(board, PLAYER1, &playAgain) != 1){
-            playerMove(board, PLAYER2, &playAgain);
+        if((rand() % 2) + 1 == 1){
+            while(1 == 1){
+                if (playerMove(board, PLAYER1, &playAgain) != 1){
+                    playerMove(board, PLAYER2, &playAgain);
+                }
+            }
+        } else {
+            while(1 == 1){
+                if (playerMove(board, PLAYER2, &playAgain) != 1){
+                    playerMove(board, PLAYER1, &playAgain);
+                }
+            }
         }
     }
-
-    printf("Thnaks for playing\n");
     
+    printf("Thanks for playing\n");
 
     return 0;
 }
@@ -54,10 +67,10 @@ int playerMove(char board[3][3], char player, char *playAgain){
     printf("Choose col: ");
     scanf("%d", &col);
 
-    if(board[row][col] != ' ') {
+    if(row > 3 || row < 0 || col > 3 || col < 0 || board[row][col] != ' ') {
         printf("Invalid move\n");
     }
-    }while(board[row][col] != ' ');
+    }while(row > 3 || row < 0 || col > 3 || col < 0 || board[row][col] != ' ');
 
     board[row][col] = player;
     printBoard(board);
@@ -138,4 +151,3 @@ void resetGame(char board[3][3]){
         }
     }
 }
-// 200 CURR
